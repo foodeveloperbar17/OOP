@@ -13,7 +13,8 @@ public class AppearancesTest extends TestCase {
 		}
 		return list;
 	}
-	
+
+
 	public void testSameCount1() {
 		List<String> a = stringToList("abbccc");
 		List<String> b = stringToList("cccbba");
@@ -27,6 +28,11 @@ public class AppearancesTest extends TestCase {
 		assertEquals(2, Appearances.sameCount(a, Arrays.asList(1, 3, 3, 1)));
 		assertEquals(1, Appearances.sameCount(a, Arrays.asList(1, 3, 3, 1, 1)));
 	}
-	
-	// Add more tests
+
+	public void testSameCount3(){
+		List<Integer> a = Arrays.asList(1, 2, 2, 3, 3, 3, 4, 4, 4, 4);
+		assertEquals(0, Appearances.sameCount(a, Arrays.asList(1, 9, 9, 1)));
+		assertEquals(2, Appearances.sameCount(a, Arrays.asList(1, 3, 3, 3)));
+		assertEquals(0, Appearances.sameCount(a, Arrays.asList(4, 4, 4, 3, 3, 2)));
+	}
 }

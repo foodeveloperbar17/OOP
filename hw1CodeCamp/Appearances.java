@@ -8,7 +8,25 @@ public class Appearances {
 	 * @return number of same-appearance elements
 	 */
 	public static <T> int sameCount(Collection<T> a, Collection<T> b) {
-		return 0; // YOUR CODE HERE
+		Map<Object, Integer> aMap = new HashMap<>();
+		Map<Object, Integer> bMap = new HashMap<>();
+		countElementsFrequency(aMap, a);
+		countElementsFrequency(bMap, b);
+		int result = 0;
+		for(Object o: aMap.keySet()){
+			if(aMap.get(o).equals(bMap.get(o))){
+				result++;
+			}
+		}
+		return result;
 	}
-	
+
+	private static void countElementsFrequency(Map<Object, Integer> map, Collection a){
+		for (Object curr : a){
+			if(!map.containsKey(curr)){
+				map.put(curr, 0);
+			}
+			map.put(curr, map.get(curr) + 1);
+		}
+	}
 }
