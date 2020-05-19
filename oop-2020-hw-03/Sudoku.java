@@ -127,7 +127,7 @@ public class Sudoku {
     // solving hardGrid.
     public static void main(String[] args) {
         Sudoku sudoku;
-        sudoku = new Sudoku(hardGrid);
+        sudoku = new Sudoku(easyGrid);
 
         System.out.println(sudoku); // print the raw problem
         int count = sudoku.solve();
@@ -141,7 +141,11 @@ public class Sudoku {
     private int[][] rows;
     private int[][] columns;
     private long elapsed;
-    private String solutionText;
+    private String solutionText = "";
+
+    public int getSolvableSpotsSize(){
+        return solvableSpots.size();
+    }
 
 
     /**
@@ -154,10 +158,14 @@ public class Sudoku {
         sortSolvableSpots();
     }
 
+    public Sudoku(String text){
+        this(textToGrid(text));
+    }
+
     private void fillSolvableSpots() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                if (rows[i][j] != 0) {
+                if (rows[i][j] == 0) {
                     solvableSpots.add(new Spot(i, j));
                 }
             }
@@ -173,6 +181,7 @@ public class Sudoku {
         });
     }
 
+    @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < SIZE; i++) {
@@ -205,7 +214,7 @@ public class Sudoku {
 
     private int solveRecursively(int depth) {
         if (depth == solvableSpots.size()) {
-            if (solutionText == null) {
+            if (solutionText.equals("")) {
                 solutionText = toString();
             }
             return 1;
@@ -214,13 +223,12 @@ public class Sudoku {
         Spot currSpot = solvableSpots.get(depth);
         for (int number : currSpot.getPossibleValues()) {
             currSpot.setValue(number);
-            System.out.println("kaloche");
             currSolutions += solveRecursively(depth + 1);
+            currSpot.setValue(0);
             if (currSolutions >= MAX_SOLUTIONS) {
                 return currSolutions;
             }
         }
-        currSpot.setValue(0);
         return currSolutions;
     }
 
@@ -257,8 +265,8 @@ public class Sudoku {
             for (int i = 0; i < rows[row].length; i++) {
                 possibleValues.remove(rows[row][i]);
             }
-            for (int i = 0; i < columns[column].length; i++) {
-                possibleValues.remove(columns[column][i]);
+            for (int i = 0; i < SIZE; i++) {
+                possibleValues.remove(rows[i][column]);
             }
 
             int currBoxRow = row / 3 * 3;
